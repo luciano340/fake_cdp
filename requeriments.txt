@@ -1,1 +1,3 @@
 randomname
+six
+kafka-python-ng
