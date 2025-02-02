@@ -1,3 +1,5 @@
 randomname
 six
 kafka-python-ng
+sqlalchemy
+mysql-connector-python

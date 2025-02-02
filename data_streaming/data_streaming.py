@@ -1,5 +1,7 @@
+from datetime import datetime
 import json
 from typing import Iterator
+from uuid import UUID
 from kafka import KafkaConsumer, KafkaProducer
 from DTO.events_dto import EventsDto
 from data_streaming.data_streaming_interface import T, DataStreamingInterface 
@@ -17,6 +19,7 @@ class DataStreaming(DataStreamingInterface):
             group_id=group_id,
             value_deserializer=lambda m: json.loads(m.decode("utf-8")),
             auto_offset_reset="earliest",
+            enable_auto_commit=True
         )
 
     def send(self, msg: EventsDto) -> None:
@@ -24,7 +27,18 @@ class DataStreaming(DataStreamingInterface):
 
     def recv(self) -> Iterator[T]:
         for msg in self.__consumer:
-            yield EventsDto(**msg.value)
+            event = json.loads(msg.value)
+            try:
+                yield EventsDto(
+                    client=event['client'],
+                    event=event['event'],
+                    price=event['price'],
+                    timestamp=datetime.strptime(event["timestamp"], "%Y-%m-%d %H:%M:%S"),
+                    id=UUID(event['id']),
+                    long_text=event['long_text']
+                )
+            except:
+                continue
     
     def close(self):
         self.__producer.close()
