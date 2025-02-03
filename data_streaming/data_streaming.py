@@ -18,8 +18,8 @@ class DataStreaming(DataStreamingInterface):
             bootstrap_servers=bootstrap_servers,
             group_id=group_id,
             value_deserializer=lambda m: json.loads(m.decode("utf-8")),
-            auto_offset_reset="earliest",
-            enable_auto_commit=True
+            auto_offset_reset="latest",
+            enable_auto_commit=False
         )
 
     def send(self, msg: EventsDto) -> None:
@@ -38,7 +38,9 @@ class DataStreaming(DataStreamingInterface):
                     long_text=event['long_text']
                 )
             except:
+                self.__consumer.commit()
                 continue
+            self.__consumer.commit()
     
     def close(self):
         self.__producer.close()

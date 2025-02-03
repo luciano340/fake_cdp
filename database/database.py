@@ -1,5 +1,4 @@
 from typing import Optional
-from uuid import UUID
 import uuid
 from DTO.events_dto import EventsDto
 from database.database_interface import DataBaseInterface
@@ -53,11 +52,12 @@ class DataBase(DataBaseInterface):
             raise EventInsertErroORM(err)
     
     def get_all(self) -> list[EventsDto]:
-        raw_events = self.session.query(EventsDto).all()
+        raw_events = self.session.query(EventoORM).all()
 
         if raw_events is None:
             raise EventEmptyORM(f"Events cannot be found!")
         
+        print('chegou aqui')
         events = []
 
         for e in raw_events:
@@ -67,7 +67,8 @@ class DataBase(DataBaseInterface):
                     client=e.client,
                     event=e.event,
                     price=e.price,
-                    timestamp=e.timestamp
+                    timestamp=e.timestamp,
+                    long_text=e.long_text
                 )
             )
         
