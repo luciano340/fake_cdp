@@ -9,6 +9,8 @@ docker compose up -d
 
 Este documento descreve a arquitetura cloud para um **Customer Data Platform (CDP)**, focando na ingestão, processamento e consulta de eventos em tempo real. A solução utiliza **Kafka (MSK)**, **MySQL (RDS)**, **ElasticSearch (EKS)** e **FastAPI** rodando em **EC2**.
 
+[Diagrama da arquitetura](https://raw.githubusercontent.com/luciano340/fake_cdp/refs/heads/sexta_implementacao/infra/Diagrama-cloud.svg)
+
 ## Visão Geral
 
 1. **Producer** gera eventos aleatórios e os envia para o **Kafka (MSK)**.
