@@ -4,7 +4,8 @@ from typing import Iterator
 from uuid import UUID
 from kafka import KafkaConsumer, KafkaProducer
 from DTO.events_dto import EventsDto
-from data_streaming.data_streaming_interface import T, DataStreamingInterface 
+from data_streaming.data_streaming_interface import T, DataStreamingInterface
+from indexer.indexer_interface import IndexerInterface 
 
 class DataStreaming(DataStreamingInterface):
     def __init__(self, group_id: str = "Estudos",  bootstrap_servers: str = 'localhost:9092' , topic: str = 'eventos_clientes'):
@@ -19,11 +20,11 @@ class DataStreaming(DataStreamingInterface):
             group_id=group_id,
             value_deserializer=lambda m: json.loads(m.decode("utf-8")),
             auto_offset_reset="latest",
-            enable_auto_commit=False
+            enable_auto_commit=True
         )
 
     def send(self, msg: EventsDto) -> None:
-        self.__producer.send(self.topic, msg.json())
+        self.__producer.send(self.topic, msg.to_json_string())
 
     def recv(self) -> Iterator[T]:
         for msg in self.__consumer:
@@ -38,9 +39,7 @@ class DataStreaming(DataStreamingInterface):
                     long_text=event['long_text']
                 )
             except:
-                self.__consumer.commit()
                 continue
-            self.__consumer.commit()
     
     def close(self):
         self.__producer.close()

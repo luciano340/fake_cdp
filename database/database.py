@@ -73,3 +73,8 @@ class DataBase(DataBaseInterface):
             )
         
         return events
+
+    def kill_instance(self) -> None:
+        if self.session:
+            self.session.close()
+            DataBase._instance = None

@@ -14,5 +14,5 @@ class EventsDto:
     id: UUID = field(default_factory=uuid4)
     long_text: str = ""
 
-    def json(self) -> dict:
+    def to_json_string(self) -> dict:
         return json.dumps(asdict(self), default=str)

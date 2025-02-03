@@ -15,3 +15,7 @@ class DataBaseInterface(ABC):
     @abstractmethod
     def get_all(self) -> list[EventsDto]:
         pass
+
+    @abstractmethod
+    def kill_instance(self) -> None:
+        pass
