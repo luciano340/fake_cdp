@@ -37,6 +37,8 @@ Este documento descreve a arquitetura cloud para um **Customer Data Platform (CD
 ### 4. **MySQL (RDS)**
 - Gerenciado pela **AWS RDS**, oferecendo escalabilidade, backups automáticos e alta disponibilidade.
 - Mantém a **integridade relacional** dos dados processados.
+- MultiAZ sempre habilitado.
+- Aplicar replicar de leitura conforme necessidade.
 
 ### 5. **ElasticSearch (EKS)**
 - Implantado em um **cluster Kubernetes (EKS)** com **múltiplos nós distribuídos em 3 zonas de disponibilidade**.
@@ -53,11 +55,6 @@ Este documento descreve a arquitetura cloud para um **Customer Data Platform (CD
 ✅ **Conectividade Simples**: Route 53 substitui a necessidade de um NLB para conexão com Kafka.  
 ✅ **Balanceamento Automático**: MSK gerencia as partições e consumidores de forma eficiente.  
 ✅ **Consultas Otimizadas**: MySQL oferece confiabilidade para armazenamento, enquanto ElasticSearch garante consultas rápidas.  
-
-## Possíveis Melhorias Futuras
-🔹 **Autoscaling no EKS**: Ajustar automaticamente os recursos do cluster conforme a demanda.  
-🔹 **Replica do RDS**: Configurar leitura em réplicas para otimizar performance.  
-🔹 **Monitoramento**: Incluir Prometheus e Grafana para métricas e logs detalhados.  
 
 ---
 Se tiver dúvidas ou sugestões, fique à vontade para contribuir! 🚀
