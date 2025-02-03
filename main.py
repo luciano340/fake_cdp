@@ -4,14 +4,23 @@ from database.database import DataBase
 from indexer.indexer import Indexer
 from producer import producer
 from consumer import consumer
+from api.api import app
+import uvicorn
+import sys
 
-indexer = Indexer()
+
 broker = DataStreaming()
 db = DataBase()
-t1 = Thread(target=producer, args=(broker,))
-t2 = Thread(target=producer, args=(broker,))
-t1.start()
-t2.start()
+if len(sys.argv) == 1:
+    exit(1)
 
-
-consumer(broker=broker, db=db, indexer=indexer)
+if sys.argv[1] == "producer":
+    t1 = Thread(target=producer, args=(broker,))
+    t2 = Thread(target=producer, args=(broker,))
+    t1.start()
+    t2.start()
+elif sys.argv[1] == "consumer":
+    indexer = Indexer()
+    consumer(broker=broker, db=db, indexer=indexer)
+elif sys.argv[1] == "api":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

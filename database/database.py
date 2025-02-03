@@ -2,14 +2,15 @@ from typing import Optional
 import uuid
 from DTO.events_dto import EventsDto
 from database.database_interface import DataBaseInterface
-from sqlalchemy import create_engine, Column, String, DateTime, DECIMAL
+from sqlalchemy import create_engine, Column, String, DateTime, DECIMAL, inspect
 from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import sessionmaker, Session, declarative_base
 from database.exceptions import EventEmptyORM, EventInsertErroORM
 
-DATABASE_URL = "mysql+mysqlconnector://root:root@localhost/cdp"
+DATABASE_URL = "mysql+mysqlconnector://root:root@mysql/cdp"
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+inspector = inspect(engine)
 
 Base = declarative_base()
 class EventoORM(Base):
@@ -21,7 +22,9 @@ class EventoORM(Base):
     price = Column(DECIMAL(10, 2))
     long_text = Column(LONGTEXT)
     timestamp = Column(DateTime)
-Base.metadata.create_all(bind=engine)
+
+if 'events' not in inspector.get_table_names():
+    Base.metadata.create_all(bind=engine)
 
 class DataBase(DataBaseInterface):
     _instance: Optional[Session] = None
@@ -57,7 +60,6 @@ class DataBase(DataBaseInterface):
         if raw_events is None:
             raise EventEmptyORM(f"Events cannot be found!")
         
-        print('chegou aqui')
         events = []
 
         for e in raw_events:

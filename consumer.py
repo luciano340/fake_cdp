@@ -1,4 +1,3 @@
-import time
 import randomname
 from random import randint
 from data_streaming.data_streaming_interface import DataStreamingInterface
