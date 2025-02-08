@@ -6,7 +6,6 @@ from indexer.indexer_interface import IndexerInterface
 class Indexer(IndexerInterface):
     def __init__(self, index: str = "cdp_eventos"):
         self.conn = Elasticsearch("http://elasticsearch:9200")
-        print(self.conn.info())
         self.index = index
 
     def send(self, msg: EventsDto) -> None:

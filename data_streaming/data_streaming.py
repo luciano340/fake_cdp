@@ -5,7 +5,6 @@ from uuid import UUID
 from kafka import KafkaConsumer, KafkaProducer
 from DTO.events_dto import EventsDto
 from data_streaming.data_streaming_interface import T, DataStreamingInterface
-from indexer.indexer_interface import IndexerInterface 
 
 class DataStreaming(DataStreamingInterface):
     def __init__(self, group_id: str = "Estudos",  bootstrap_servers: str = 'kafka:9092' , topic: str = 'eventos_clientes'):
