@@ -23,13 +23,12 @@ class EventoORM(Base):
     long_text = Column(LONGTEXT)
     timestamp = Column(DateTime)
 
-if 'events' not in inspector.get_table_names():
-    Base.metadata.create_all(bind=engine)
-
 class DataBase(DataBaseInterface):
     _instance: Optional[Session] = None
     
     def __init__(self):
+        if 'events' not in inspector.get_table_names():
+            Base.metadata.create_all(bind=engine)
         self.session = DataBase.get_instance()
 
     @classmethod

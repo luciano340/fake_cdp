@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     libffi-dev \
     build-base
 
+RUN mkdir -p /tmp/prometheus
 WORKDIR /app
 COPY . .
 RUN pip install -r requeriments.txt
