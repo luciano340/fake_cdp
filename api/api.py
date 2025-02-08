@@ -10,23 +10,21 @@ from indexer.indexer import Indexer
 
 app = FastAPI()
 
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    app.metrics.api_respose_time.labels(endpoint=request.url.path, method=request.method).observe(process_time)
-    return response
-
 @app.get("/eventos_db/")
 def get_eventos():
+    start_time = time.time()
     db = DataBase()
     eventos = db.get_all()
     db.kill_instance()
+    process_time = time.time() - start_time
+    app.metrics.api_respose_time.labels(endpoint="/eventos_db/", method="GET").observe(process_time)
     return eventos
 
 @app.get("/eventos_es/")
 def get_eventos():
+    start_time = time.time()
     indexer = Indexer()
     response = indexer.search_all()
+    process_time = time.time() - start_time
+    app.metrics.api_respose_time.labels(endpoint="/eventos_es/", method="GET").observe(process_time)
     return response

@@ -20,6 +20,7 @@ def consumer(broker: DataStreamingInterface, db: database_interface, indexer: In
                 dt_end = datetime.strptime(timestamp_end, "%Y-%m-%d %H:%M:%S")
                 dt_start = datetime.strptime(str(msg.timestamp), "%Y-%m-%d %H:%M:%S")
                 elapsed_seconds = (dt_end - dt_start).total_seconds()
+                print(f'Evento processado em {elapsed_seconds}')
                 metrics.events_queue.dec(1)
                 metrics.event_process_time.observe(elapsed_seconds)
             except EventInsertErroORM as err:

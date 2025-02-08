@@ -1,4 +1,6 @@
+import random
 from threading import Thread
+import time
 from data_streaming.data_streaming import DataStreaming
 from database.database import DataBase
 from indexer.indexer import Indexer
@@ -7,6 +9,8 @@ from producer import producer
 from consumer import consumer
 import uvicorn
 import sys
+
+time.sleep(random.uniform(5, 10))
 
 metrics = Metrics()
 broker = DataStreaming()

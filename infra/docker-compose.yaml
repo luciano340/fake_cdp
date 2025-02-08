@@ -89,6 +89,7 @@ services:
     build: 
       context: ../
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "1000:1000"
     environment:
@@ -106,6 +107,7 @@ services:
       context: ../
       dockerfile: Dockerfile
     container_name: consumer_fake
+    restart: always
     ports:
       - "1001:1001"
     environment:
@@ -121,6 +123,7 @@ services:
     build: 
       context: ../
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8000:8000"
       - "1002:1002"
@@ -137,6 +140,19 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/estudos-dash.json:/etc/grafana/provisioning/dashboards/estudos-dash.json
+    ports:
+      - 8186:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin 
+      - GF_SECURITY_ADMIN_PASSWORD=admin  
 
 volumes:
   shared_metrics:
