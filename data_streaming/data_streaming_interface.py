@@ -12,3 +12,7 @@ class DataStreamingInterface(ABC):
     @abstractmethod
     def recv(self) -> Iterator[T]:
         pass
+
+    @abstractmethod
+    def close(self) -> None:
+        pass

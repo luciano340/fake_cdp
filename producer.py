@@ -13,10 +13,9 @@ def producer(broker: DataStreamingInterface) -> None:
         event = EventsDto(
             client=random.choice(names),
             event=random.choice(events),
-            price=round(random.uniform(10, 1000), 2),
-            timestamp=time.time()
+            price=round(random.uniform(10, 1000), 2)
         )
 
         broker.send(event)
         print('Evento enviado!')
-        time.sleep(random.random())    
+        time.sleep(random.random())
